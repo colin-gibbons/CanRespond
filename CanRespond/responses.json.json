@@ -1,0 +1,15 @@
+[
+  {
+    "title": "Start Bomgar Session",
+    "content": "I can assist with the issue remotley. Please send me your computer name, and let me know when to connect.\nThanks!"
+  },
+  {
+    "title": "Install Cisco VPN",
+    "content": "The Cisco VPN can be installed via the instructions located at: servicenow.com/instructions\nPlease let me know if you have any issues with the setup."
+  },
+  {
+    "title": "Connect Printers",
+    "content": "Printers can be installed through the printers.tti.tamu.edu website. Please use chrome to access the site, and follow the instructions located at: servicenow.com/instructions"
+  }
+
+]

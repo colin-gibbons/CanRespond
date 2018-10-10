@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <response>
+    <title>Start Bomgar Session</title>
+    <content>I can assist with the issue remotley. Please send me your computer name, and let me know when to connect.\nThanks!</content>
+  </response>
+  <response>
+    <title>Install Cisco VPN</title>
+    <content>The Cisco VPN can be installed via the instructions located at: servicenow.com/instructions\nPlease let me know if you have any issues with the setup.</content>
+  </response>
+  <response>
+    <title>Connect Printers</title>
+    <content>Printers can be installed through the printers.tti.tamu.edu website. Please use chrome to access the site, and follow the instructions located at: servicenow.com/instructions</content>
+  </response>
+</data>
