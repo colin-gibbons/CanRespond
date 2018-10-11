@@ -77,34 +77,37 @@ namespace CanRespond
 
                 TitleList.Items.Add(item);
             }
-
-
         }
 
-        private void ContentBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ToggleContentBoxEdit()
         {
-            // Toggle readOnly mode
+            // Toggle ReadOnly mode
             ContentBox.IsReadOnly = !ContentBox.IsReadOnly;
 
-            // Save Changes upon exiting readOnly mode
-            if (ContentBox.IsReadOnly)
+            if (ContentBox.IsReadOnly) // User exited Edit mode, so save data to list:
             {
-                //set Background Color
-                SolidColorBrush brush = new SolidColorBrush();
-                Color color = (Color)ColorConverter.ConvertFromString("#FF99B4D1");
-                brush.Color = color;
-                ContentBox.Background = brush;
-
-                // Save changes to list
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
                 string title = selectedItem.Content.ToString();
 
                 responses.GetResponse(title).Content = ContentBox.Text;
+
+                WriteXML(); // save changes to file
+
+                StatusText.Content = "Changes saved!";
             }
-            else
+            else // is in edit mode
             {
-                ContentBox.Background = Brushes.NavajoWhite;
+                StatusText.Content = "Editing...";
             }
+        }
+
+        // // // // // // // // // 
+        // Event Listener Code  //
+        // // // // // // // // //
+
+        private void ContentBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ToggleContentBoxEdit();
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -173,7 +176,7 @@ namespace CanRespond
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
                 string title = selectedItem.Content.ToString();
 
-                // global var to store previous title
+                // global var stores previous title
                 prevTitle = title;
 
                 TextBox temp = new TextBox();
@@ -190,6 +193,8 @@ namespace CanRespond
             }
         }
 
+        // TextBox used for editing Response Title
+        // TODO: rename
         private void tempBox_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter || e.Key == Key.Escape)
@@ -226,7 +231,7 @@ namespace CanRespond
 
         private void ContentBox_KeyDown(object sender, KeyEventArgs e)
         {
-
+            // TODO: make esc exit edit mode
         }
     }
 }
