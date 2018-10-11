@@ -29,6 +29,9 @@ namespace CanRespond
 
         Responses responses = new Responses();
 
+        bool isEditing = false;
+        string prevTitle = "";
+
         public MainWindow(){
             InitializeComponent();
 
@@ -112,6 +115,12 @@ namespace CanRespond
             };
 
             TitleList.Items.Add(item);
+
+            Response newItem = new Response();
+            newItem.Title = "New Response";
+            newItem.Content = "";
+
+            responses.ResponseList.Add(newItem);
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -158,22 +167,31 @@ namespace CanRespond
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
-            string title = selectedItem.Content.ToString();
+            if (!isEditing)
+            {
+                ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
+                string title = selectedItem.Content.ToString();
 
-            TextBox temp = new TextBox();
-            temp.SelectedText = title;
-            temp.Width = TitleList.Width - 1;
-            temp.KeyDown += new KeyEventHandler(tempBox_KeyDown);
+                // global var to store previous title
+                prevTitle = title;
 
-            int i = TitleList.Items.IndexOf(selectedItem);
-            TitleList.Items.RemoveAt(i);
-            TitleList.Items.Insert(i, temp);
+                TextBox temp = new TextBox();
+                temp.Text = title;
+                temp.Width = TitleList.Width - 1;
+                temp.KeyDown += new KeyEventHandler(tempBox_KeyDown);
+
+                int i = TitleList.Items.IndexOf(selectedItem);
+                TitleList.Items.RemoveAt(i);
+                TitleList.Items.Insert(i, temp);
+
+                temp.Focus();
+                temp.SelectAll();
+            }
         }
 
         private void tempBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if(e.Key == Key.Enter || e.Key == Key.Escape)
             {
                 int i = -1;
                 TextBox temp = null;
@@ -195,7 +213,9 @@ namespace CanRespond
                         Content = temp.Text //TODO: move to properties xml
                     };
 
-                    // TODO: Update in responses
+                    // TODO: Remove global variable
+                    responses.GetResponse(prevTitle).Title = temp.Text;
+                    prevTitle = "";
 
                     TitleList.Items.RemoveAt(i);
                     TitleList.Items.Insert(i, item);

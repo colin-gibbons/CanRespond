@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
         ScrollViewer.VerticalScrollBarVisibility="Hidden"
-        Title="CanRespond" Height="350.921" Width="806.454" WindowStyle="ThreeDBorderWindow">
-    <Grid Margin="0,0,-8,-1">
+        Title="CanRespond" Height="355.836" Width="793.676" WindowStyle="ThreeDBorderWindow">
+    <Grid Margin="0,0,2,20">
         <ListBox x:Name="TitleList" HorizontalAlignment="Left" Height="273" VerticalAlignment="Top" Width="246" Margin="0,31,0,0" SelectionChanged="TitleList_SelectionChanged" MouseDoubleClick="TitleList_MouseDoubleClick"/>
-        <Menu HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="794">
+        <Menu HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="784">
             <MenuItem x:Name="NewButton" Header="New Response" Height="31" Width="140" Click="NewButton_Click"/>
             <MenuItem x:Name="DeleteButton" Header="Delete Response" Height="31" Width="141" Click="DeleteButton_Click"/>
             <MenuItem x:Name="EditButton" Header="Edit Title" Height="21" Width="100" Click="EditButton_Click"/>
