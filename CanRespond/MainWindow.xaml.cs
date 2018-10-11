@@ -78,45 +78,37 @@ namespace CanRespond
 
         }
 
-        private void ResponseBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ContentBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("Doubled clicked ResponseBox");
             // Toggle readOnly mode
-            ResponseBox.IsReadOnly = !ResponseBox.IsReadOnly;
+            ContentBox.IsReadOnly = !ContentBox.IsReadOnly;
 
             // Save Changes upon exiting readOnly mode
-            if (ResponseBox.IsReadOnly)
+            if (ContentBox.IsReadOnly)
             {
                 //set Background Color
                 SolidColorBrush brush = new SolidColorBrush();
                 Color color = (Color)ColorConverter.ConvertFromString("#FF99B4D1");
                 brush.Color = color;
-                ResponseBox.Background = brush;
+                ContentBox.Background = brush;
 
                 // Save changes to list
-                Debug.WriteLine("Saved Content");
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
                 string title = selectedItem.Content.ToString();
 
-                responses.GetResponse(title).Content = ResponseBox.Text;
+                responses.GetResponse(title).Content = ContentBox.Text;
             }
             else
             {
-                ResponseBox.Background = Brushes.NavajoWhite;
+                ContentBox.Background = Brushes.NavajoWhite;
             }
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            string tempTitle = "New Response";
-            string tempContent = "";
-
-            //XmlNode newNode = responses.CreateElement("response");
-
-
             ListBoxItem item = new ListBoxItem
             {
-                Content = "New Response"
+                Content = "New Response" //TODO: move to properties xml
             };
 
             TitleList.Items.Add(item);
@@ -134,21 +126,17 @@ namespace CanRespond
                 responses.ResponseList.Remove(response);
             }
 
-            ResponseBox.Text = "";
+            ContentBox.Text = "";
             FillTitleList();
         }
 
         private void TitleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // TODO: move read only mode to function
-            ResponseBox.IsReadOnly = true;
+            ContentBox.IsReadOnly = true;
+
             // UPDATE CHANGES
-            if (e.RemovedItems.Count > 0)
-            {
-                ListBoxItem prevSel = (ListBoxItem)e.RemovedItems[0];
-                Debug.WriteLine(prevSel.Content.ToString());
-            }
-                ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
+            ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
             
             if (selectedItem != null)
             {
@@ -158,19 +146,66 @@ namespace CanRespond
 
                 if (response != null)
                 {
-                    ResponseBox.Text = response.Content;
+                    ContentBox.Text = response.Content;
                 }
             }
         }
 
         private void TitleList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Clipboard.SetText(ResponseBox.Text);
+            Clipboard.SetText(ContentBox.Text);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine(ResponseBox.Text);
+            ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
+            string title = selectedItem.Content.ToString();
+
+            TextBox temp = new TextBox();
+            temp.SelectedText = title;
+            temp.Width = TitleList.Width - 1;
+            temp.KeyDown += new KeyEventHandler(tempBox_KeyDown);
+
+            int i = TitleList.Items.IndexOf(selectedItem);
+            TitleList.Items.RemoveAt(i);
+            TitleList.Items.Insert(i, temp);
+        }
+
+        private void tempBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                int i = -1;
+                TextBox temp = null;
+
+                foreach (object listItem in TitleList.Items)
+                {
+                    if (listItem is TextBox)
+                    {
+                        temp = (TextBox)listItem;
+                        i = TitleList.Items.IndexOf(listItem);
+                        break;
+                    }
+                }
+
+                if (temp != null)
+                {
+                    ListBoxItem item = new ListBoxItem
+                    {
+                        Content = temp.Text //TODO: move to properties xml
+                    };
+
+                    // TODO: Update in responses
+
+                    TitleList.Items.RemoveAt(i);
+                    TitleList.Items.Insert(i, item);
+                }
+            }
+        }
+
+        private void ContentBox_KeyDown(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }

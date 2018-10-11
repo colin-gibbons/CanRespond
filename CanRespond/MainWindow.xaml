@@ -13,9 +13,9 @@
         <Menu HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="794">
             <MenuItem x:Name="NewButton" Header="New Response" Height="31" Width="140" Click="NewButton_Click"/>
             <MenuItem x:Name="DeleteButton" Header="Delete Response" Height="31" Width="141" Click="DeleteButton_Click"/>
-            <MenuItem Header="Edit Title" Height="21" Width="100" Click="MenuItem_Click"/>
+            <MenuItem x:Name="EditButton" Header="Edit Title" Height="21" Width="100" Click="EditButton_Click"/>
         </Menu>
-        <TextBox x:Name="ResponseBox" HorizontalAlignment="Left" Height="273" Margin="246,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="538" SpellCheck.IsEnabled="True" FontFamily="Calibri" MouseDoubleClick="ResponseBox_MouseDoubleClick" AcceptsReturn="True" IsReadOnly="True">
+        <TextBox x:Name="ContentBox" HorizontalAlignment="Left" Height="273" Margin="246,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="538" SpellCheck.IsEnabled="True" FontFamily="Calibri" MouseDoubleClick="ContentBox_MouseDoubleClick" AcceptsReturn="True" IsReadOnly="True" KeyDown="ContentBox_KeyDown">
             <TextBox.Background>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
             </TextBox.Background>
