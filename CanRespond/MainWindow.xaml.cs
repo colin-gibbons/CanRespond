@@ -27,10 +27,15 @@ namespace CanRespond
     /// </summary>
     public partial class MainWindow : Window{
 
-        Responses responses = new Responses();
+        Responses Responses = new Responses();
 
-        bool isEditing = false;
-        string prevTitle = "";
+        // TODO: make this the first default response
+        string UsageInstructions = "Quick-Start Guide:" + Environment.NewLine + "Double click on a Response title to copy it to the clipboard." + Environment.NewLine + "Double-Click in this content area to enter edit mode";
+
+        // global vars for editing response titles
+        // TODO: find better way to do it
+        bool IsEditingTitle = false;
+        string PreviousTitle = "";
 
         public MainWindow(){
             InitializeComponent();
@@ -43,32 +48,37 @@ namespace CanRespond
             LoadXML();
 
             FillTitleList();
+
+            ContentBox.Text = UsageInstructions;
         }
 
+        // Loads XML from file using serializeable class Responses
         private void LoadXML()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Responses));
             FileStream fileStream = new FileStream(Properties.Resources.xmlPath, FileMode.Open);
 
-            responses = (Responses)serializer.Deserialize(fileStream);
+            Responses = (Responses)serializer.Deserialize(fileStream);
         }
 
+        // Writes XML to file using serializeable class Responses
         private void WriteXML()
         {
  
             XmlSerializer mySerializer = new XmlSerializer(typeof(Responses));
 
             StreamWriter myWriter = new StreamWriter(Properties.Resources.xmlPath);
-            mySerializer.Serialize(myWriter, responses);
+            mySerializer.Serialize(myWriter, Responses);
             myWriter.Close();
 
         }
 
+        // Fills the TitleList ListBox with Response Titles
         private void FillTitleList()
         {
             TitleList.Items.Clear();
 
-            foreach (Response response in responses.ResponseList)
+            foreach (Response response in Responses.ResponseList)
             {
                 ListBoxItem item = new ListBoxItem
                 {
@@ -79,7 +89,8 @@ namespace CanRespond
             }
         }
 
-        private void ToggleContentBoxEdit()
+        // Toggles content editing mode on/off
+        private void ToggleContentBoxEdit(bool saveChanges = true)
         {
             // Toggle ReadOnly mode
             ContentBox.IsReadOnly = !ContentBox.IsReadOnly;
@@ -87,19 +98,44 @@ namespace CanRespond
             if (ContentBox.IsReadOnly) // User exited Edit mode, so save data to list:
             {
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
-                string title = selectedItem.Content.ToString();
 
-                responses.GetResponse(title).Content = ContentBox.Text;
+                if (selectedItem != null)
+                {
+                    string title = selectedItem.Content.ToString();
 
-                WriteXML(); // save changes to file
+                    Responses.GetResponse(title).Content = ContentBox.Text;
 
-                StatusText.Content = "Changes saved!";
+                    if (saveChanges)
+                    {
+                        WriteXML(); // save changes to file
+
+                        UpdateStatus("Changes saved.");
+                    }
+
+                    // reset status bar color
+                    StatBar.Background = getBrushFromHex("#FF007ACC");
+                }
             }
             else // is in edit mode
             {
-                StatusText.Content = "Editing...";
-                statBar.Background = Brushes.Orange;
+                UpdateStatus("Editing...");
+
+                StatBar.Background = getBrushFromHex("#ca5100");
             }
+        }
+
+        private void UpdateStatus(string status)
+        {
+            // TODO: Make bar flash?
+            StatusText.Content = status;
+        }
+
+        private SolidColorBrush getBrushFromHex(string hex)
+        {
+            SolidColorBrush brush = new SolidColorBrush();
+            Color color = (Color)ColorConverter.ConvertFromString(hex);
+            brush.Color = color;
+            return brush;
         }
 
         // // // // // // // // // 
@@ -124,7 +160,7 @@ namespace CanRespond
             newItem.Title = "New Response";
             newItem.Content = "";
 
-            responses.ResponseList.Add(newItem);
+            Responses.ResponseList.Add(newItem);
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -132,11 +168,11 @@ namespace CanRespond
             ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
             string title = selectedItem.Content.ToString();
 
-            Response response = responses.GetResponse(title);
+            Response response = Responses.GetResponse(title);
 
             if (response != null)
             {
-                responses.ResponseList.Remove(response);
+                Responses.ResponseList.Remove(response);
             }
 
             ContentBox.Text = "";
@@ -155,35 +191,37 @@ namespace CanRespond
             {
                 string title = selectedItem.Content.ToString();
 
-                Response response = responses.GetResponse(title);
+                Response response = Responses.GetResponse(title);
 
                 if (response != null)
                 {
                     ContentBox.Text = response.Content;
                 }
+
+                UpdateStatus("Double-Click text to edit.");
             }
         }
 
         private void TitleList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Clipboard.SetText(ContentBox.Text);
-            StatusText.Content = "Text Copied";        
+            StatusText.Content = "Text Copied!";        
         }
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            if (!isEditing)
+            if (!IsEditingTitle)
             {
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
                 string title = selectedItem.Content.ToString();
 
                 // global var stores previous title
-                prevTitle = title;
+                PreviousTitle = title;
 
                 TextBox temp = new TextBox();
                 temp.Text = title;
                 temp.Width = TitleList.Width - 1;
-                temp.KeyDown += new KeyEventHandler(tempBox_KeyDown);
+                temp.KeyDown += new KeyEventHandler(TempBox_KeyDown);
 
                 int i = TitleList.Items.IndexOf(selectedItem);
                 TitleList.Items.RemoveAt(i);
@@ -196,7 +234,7 @@ namespace CanRespond
 
         // TextBox used for editing Response Title
         // TODO: rename
-        private void tempBox_KeyDown(object sender, KeyEventArgs e)
+        private void TempBox_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter || e.Key == Key.Escape)
             {
@@ -217,12 +255,11 @@ namespace CanRespond
                 {
                     ListBoxItem item = new ListBoxItem
                     {
-                        Content = temp.Text //TODO: move to properties xml
+                        Content = temp.Text
                     };
 
-                    // TODO: Remove global variable
-                    responses.GetResponse(prevTitle).Title = temp.Text;
-                    prevTitle = "";
+                    Responses.GetResponse(PreviousTitle).Title = temp.Text;
+                    PreviousTitle = "";
 
                     TitleList.Items.RemoveAt(i);
                     TitleList.Items.Insert(i, item);

@@ -20,7 +20,7 @@
                 <SolidColorBrush Color="#FF2D2D30"/>
             </TextBox.Background>
         </TextBox>
-        <StatusBar x:Name="statBar" HorizontalAlignment="Stretch" Height="25" Margin="0,0,0,0" VerticalAlignment="Bottom" Background="#FF007ACC">
+        <StatusBar x:Name="StatBar" HorizontalAlignment="Stretch" Height="25" Margin="0,0,0,0" VerticalAlignment="Bottom" Background="#FF007ACC">
             <StatusBarItem x:Name="StatusText" Content="Welcome to CanRespond!" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Right" BorderBrush="Black" Foreground="White"/>
         </StatusBar>
 
