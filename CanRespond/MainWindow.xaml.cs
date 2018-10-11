@@ -87,11 +87,22 @@ namespace CanRespond
             // Save Changes upon exiting readOnly mode
             if (ResponseBox.IsReadOnly)
             {
+                //set Background Color
+                SolidColorBrush brush = new SolidColorBrush();
+                Color color = (Color)ColorConverter.ConvertFromString("#FF99B4D1");
+                brush.Color = color;
+                ResponseBox.Background = brush;
+
+                // Save changes to list
                 Debug.WriteLine("Saved Content");
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
                 string title = selectedItem.Content.ToString();
 
                 responses.GetResponse(title).Content = ResponseBox.Text;
+            }
+            else
+            {
+                ResponseBox.Background = Brushes.NavajoWhite;
             }
         }
 
@@ -129,6 +140,7 @@ namespace CanRespond
 
         private void TitleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // TODO: move read only mode to function
             ResponseBox.IsReadOnly = true;
             // UPDATE CHANGES
             if (e.RemovedItems.Count > 0)
@@ -153,7 +165,7 @@ namespace CanRespond
 
         private void TitleList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            Clipboard.SetText(ResponseBox.Text);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

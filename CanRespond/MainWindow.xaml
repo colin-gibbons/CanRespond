@@ -7,15 +7,19 @@
         mc:Ignorable="d"
         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
         ScrollViewer.VerticalScrollBarVisibility="Hidden"
-        Title="CanRespond" Height="350.921" Width="806.454">
+        Title="CanRespond" Height="350.921" Width="806.454" WindowStyle="ThreeDBorderWindow">
     <Grid Margin="0,0,-8,-1">
         <ListBox x:Name="TitleList" HorizontalAlignment="Left" Height="273" VerticalAlignment="Top" Width="246" Margin="0,31,0,0" SelectionChanged="TitleList_SelectionChanged" MouseDoubleClick="TitleList_MouseDoubleClick"/>
         <Menu HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="794">
             <MenuItem x:Name="NewButton" Header="New Response" Height="31" Width="140" Click="NewButton_Click"/>
             <MenuItem x:Name="DeleteButton" Header="Delete Response" Height="31" Width="141" Click="DeleteButton_Click"/>
-            <MenuItem Header="Debug" Height="21" Width="100" Click="MenuItem_Click"/>
+            <MenuItem Header="Edit Title" Height="21" Width="100" Click="MenuItem_Click"/>
         </Menu>
-        <TextBox x:Name="ResponseBox" HorizontalAlignment="Left" Height="273" Margin="246,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="538" SpellCheck.IsEnabled="True" FontFamily="Calibri" MouseDoubleClick="ResponseBox_MouseDoubleClick" AcceptsReturn="True" IsReadOnly="True"/>
+        <TextBox x:Name="ResponseBox" HorizontalAlignment="Left" Height="273" Margin="246,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="538" SpellCheck.IsEnabled="True" FontFamily="Calibri" MouseDoubleClick="ResponseBox_MouseDoubleClick" AcceptsReturn="True" IsReadOnly="True">
+            <TextBox.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
+            </TextBox.Background>
+        </TextBox>
 
     </Grid>
 </Window>
