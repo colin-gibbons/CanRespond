@@ -163,6 +163,7 @@ namespace CanRespond
         private void TitleList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Clipboard.SetText(ContentBox.Text);
+            StatusText.Content = "Text Copied";        
         }
 
         private void EditButton_Click(object sender, EventArgs e)
