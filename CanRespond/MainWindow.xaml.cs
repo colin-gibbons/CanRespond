@@ -98,6 +98,7 @@ namespace CanRespond
             else // is in edit mode
             {
                 StatusText.Content = "Editing...";
+                statBar.Background = Brushes.Orange;
             }
         }
 
