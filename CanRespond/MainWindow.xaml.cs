@@ -32,11 +32,6 @@ namespace CanRespond
         // TODO: make this the first default response
         string UsageInstructions = "Quick-Start Guide:" + Environment.NewLine + "Double click on a Response title to copy it to the clipboard." + Environment.NewLine + "Double-Click in this content area to enter edit mode";
 
-        // global vars for editing response titles
-        // TODO: find better way to do it
-        bool IsEditingTitle = false;
-        string PreviousTitle = "";
-
         public MainWindow(){
             InitializeComponent();
 
@@ -166,17 +161,24 @@ namespace CanRespond
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
-            string title = selectedItem.Content.ToString();
 
-            Response response = Responses.GetResponse(title);
-
-            if (response != null)
+            if (selectedItem != null)
             {
-                Responses.ResponseList.Remove(response);
-            }
+                string title = selectedItem.Content.ToString();
 
-            ContentBox.Text = "";
-            FillTitleList();
+                Response response = Responses.GetResponse(title);
+
+                // confirm user wants to delete
+                MessageBoxResult confirm = MessageBox.Show("\"" + title + "\" will be deleted.", "Delete Response", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+
+                if (response != null && confirm == MessageBoxResult.OK)
+                {
+                    Responses.ResponseList.Remove(response);
+                }
+
+                ContentBox.Text = "";
+                FillTitleList();
+            }
         }
 
         private void TitleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -208,27 +210,36 @@ namespace CanRespond
             StatusText.Content = "Text Copied!";        
         }
 
+        private bool IsEditingTitle()
+        {
+            return false; // TODO: finish
+        }
+
         private void EditButton_Click(object sender, EventArgs e)
         {
-            if (!IsEditingTitle)
+            if (!IsEditingTitle())
             {
                 ListBoxItem selectedItem = (ListBoxItem)TitleList.SelectedItem;
-                string title = selectedItem.Content.ToString();
 
-                // global var stores previous title
-                PreviousTitle = title;
+                if (selectedItem != null)
+                {
+                    string title = selectedItem.Content.ToString();
 
-                TextBox temp = new TextBox();
-                temp.Text = title;
-                temp.Width = TitleList.Width - 1;
-                temp.KeyDown += new KeyEventHandler(TempBox_KeyDown);
+                    TextBox temp = new TextBox();
+                    temp.Text = title;
+                    temp.Width = TitleList.Width - 1;
+                    temp.KeyDown += new KeyEventHandler(TempBox_KeyDown);
 
-                int i = TitleList.Items.IndexOf(selectedItem);
-                TitleList.Items.RemoveAt(i);
-                TitleList.Items.Insert(i, temp);
+                    // save previous title
+                    temp.Resources.Add("PreviousTitle", title);
 
-                temp.Focus();
-                temp.SelectAll();
+                    int i = TitleList.Items.IndexOf(selectedItem);
+                    TitleList.Items.RemoveAt(i);
+                    TitleList.Items.Insert(i, temp);
+
+                    temp.Focus();
+                    temp.SelectAll();
+                }
             }
         }
 
@@ -258,8 +269,9 @@ namespace CanRespond
                         Content = temp.Text
                     };
 
-                    Responses.GetResponse(PreviousTitle).Title = temp.Text;
-                    PreviousTitle = "";
+                    string previousTitle = (string) temp.Resources["PreviousTitle"];
+
+                    Responses.GetResponse(previousTitle).Title = temp.Text;
 
                     TitleList.Items.RemoveAt(i);
                     TitleList.Items.Insert(i, item);

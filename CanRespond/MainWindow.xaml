@@ -9,19 +9,19 @@
         ScrollViewer.VerticalScrollBarVisibility="Hidden"
         Title="CanRespond" Height="375" Width="800" FontFamily="Calibri"  Foreground="White" Background="#FF2D2D30" SizeToContent="WidthAndHeight" MinHeight="375" MinWidth="800" WindowStyle="ThreeDBorderWindow">
     <Grid Margin="0,0,0,0">
-        <ListBox x:Name="TitleList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="200" Margin="0,25,0,25" SelectionChanged="TitleList_SelectionChanged" MouseDoubleClick="TitleList_MouseDoubleClick" Background="#FF2D2D30" FontFamily="Calibri" Foreground="White"/>
-        <Menu HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Top" Background="White">
-            <MenuItem x:Name="NewButton" Header="New Response" HorizontalAlignment="Left" Height="24" Width="100" Click="NewButton_Click"/>
-            <MenuItem x:Name="DeleteButton" Header="Delete Response" Height="24" HorizontalAlignment="Left" Width="100" Click="DeleteButton_Click"/>
-            <MenuItem x:Name="EditButton" Header="Edit Title" Height="24" HorizontalAlignment="Left" Width="100" Click="EditButton_Click"/>
+        <ListBox x:Name="TitleList" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="200" Margin="0,20" SelectionChanged="TitleList_SelectionChanged" MouseDoubleClick="TitleList_MouseDoubleClick" Background="#FF2D2D30" FontFamily="Calibri" Foreground="White"/>
+        <Menu HorizontalAlignment="Stretch" Height="20" VerticalAlignment="Top" Background="White">
+            <MenuItem x:Name="NewButton" Header="New Response" HorizontalAlignment="Left" Height="20" Width="100" Click="NewButton_Click" FontFamily="Calibri"/>
+            <MenuItem x:Name="DeleteButton" Header="Delete Response" Height="20" HorizontalAlignment="Left" Width="100" Click="DeleteButton_Click" FontFamily="Calibri"/>
+            <MenuItem x:Name="EditButton" Header="Edit Title" Height="20" HorizontalAlignment="Left" Width="100" Click="EditButton_Click" FontFamily="Calibri"/>
         </Menu>
-        <TextBox x:Name="ContentBox" HorizontalAlignment="Stretch" Margin="200,25,0,25" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" SpellCheck.IsEnabled="True" FontFamily="Calibri" MouseDoubleClick="ContentBox_MouseDoubleClick" AcceptsReturn="True" IsReadOnly="True" KeyDown="ContentBox_KeyDown" Foreground="White">
+        <TextBox x:Name="ContentBox" HorizontalAlignment="Stretch" Margin="200,20,0,20" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" SpellCheck.IsEnabled="True" FontFamily="Calibri" MouseDoubleClick="ContentBox_MouseDoubleClick" AcceptsReturn="True" IsReadOnly="True" KeyDown="ContentBox_KeyDown" Foreground="White">
             <TextBox.Background>
                 <SolidColorBrush Color="#FF2D2D30"/>
             </TextBox.Background>
         </TextBox>
-        <StatusBar x:Name="StatBar" HorizontalAlignment="Stretch" Height="25" Margin="0,0,0,0" VerticalAlignment="Bottom" Background="#FF007ACC">
-            <StatusBarItem x:Name="StatusText" Content="Welcome to CanRespond!" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Right" BorderBrush="Black" Foreground="White"/>
+        <StatusBar x:Name="StatBar" HorizontalAlignment="Stretch" Height="20" Margin="0,0,0,0" VerticalAlignment="Bottom" Background="#FF007ACC">
+            <StatusBarItem x:Name="StatusText" Content="Welcome to CanRespond!" Height="20" VerticalAlignment="Top" HorizontalContentAlignment="Right" BorderBrush="Black" Foreground="White" FontFamily="Calibri"/>
         </StatusBar>
 
     </Grid>
